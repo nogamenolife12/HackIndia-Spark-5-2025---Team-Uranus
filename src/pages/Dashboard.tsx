@@ -15,8 +15,10 @@ import {
   Clock, 
   RefreshCw,
   Check,
-  X
+  X,
+  LogOut
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 import WalletConnect from "@/components/WalletConnect";
 import TokenList from "@/components/TokenList";
 import RiskSummary from "@/components/RiskSummary";
@@ -24,6 +26,7 @@ import RecentTransactions from "@/components/RecentTransactions";
 import ChatAssistant from "@/components/ChatAssistant";
 
 const Dashboard = () => {
+  const { user, profile, signOut } = useAuth();
   const [connected, setConnected] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   
@@ -44,6 +47,18 @@ const Dashboard = () => {
       title: "Scanning your wallet",
       description: "We're analyzing your tokens and transactions for potential risks.",
     });
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    toast({
+      title: "Signed out successfully",
+      description: "You have been logged out of your account.",
+    });
+  };
+
+  const formatWalletAddress = (address: string) => {
+    return address ? `${address.substring(0, 4)}...${address.substring(address.length - 4)}` : '0x71...8a92';
   };
 
   if (!connected) {
@@ -69,8 +84,16 @@ const Dashboard = () => {
             </Button>
             <div className="bg-[#3A3F50] px-3 py-1.5 rounded-lg flex items-center">
               <div className="h-2 w-2 rounded-full bg-green-400 mr-2"></div>
-              <span className="text-sm">0x71...8a92</span>
+              <span className="text-sm">{formatWalletAddress(user?.email || '')}</span>
             </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSignOut}
+              className="text-gray-300 hover:bg-gray-700"
+            >
+              <LogOut className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </header>

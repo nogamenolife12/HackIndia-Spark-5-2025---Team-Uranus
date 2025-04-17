@@ -3,8 +3,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Shield, AlertTriangle, Search, MessageSquare } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const Index = () => {
+  const { user } = useAuth();
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-[#1A1F2C] to-[#2A2F3C] text-white">
       {/* Hero Section */}
@@ -22,9 +25,9 @@ const Index = () => {
           Connect your wallet, scan your tokens, and detect scams before they drain your funds.
           Your personal watchdog in the crypto space.
         </p>
-        <Link to="/dashboard">
+        <Link to={user ? "/dashboard" : "/auth"}>
           <Button size="lg" className="bg-[#9b87f5] hover:bg-[#8a76e4] text-white px-8 py-6 rounded-lg text-lg">
-            Connect Wallet
+            {user ? "Go to Dashboard" : "Get Started"}
           </Button>
         </Link>
       </header>
@@ -86,9 +89,9 @@ const Index = () => {
         <p className="max-w-2xl mx-auto mb-8 text-gray-300">
           Don't wait until it's too late. BlockSage helps you make informed decisions and avoid costly mistakes.
         </p>
-        <Link to="/dashboard">
+        <Link to={user ? "/dashboard" : "/auth"}>
           <Button size="lg" className="bg-[#9b87f5] hover:bg-[#8a76e4] text-white px-8 py-6 rounded-lg text-lg">
-            Get Started Now
+            {user ? "Go to Dashboard" : "Get Started Now"}
           </Button>
         </Link>
       </section>
